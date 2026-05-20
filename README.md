@@ -172,6 +172,13 @@ echo "test" | python3 ~/notify/send_gchat.py    "🗨️ Test"
 
 ---
 
+## 📖 Detailed FAQ
+
+Full setup walkthroughs, troubleshooting, and advanced usage:
+→ **[docs/FAQ.md](docs/FAQ.md)** (22 questions covering install, all 4 channels, scripting, Claude integration)
+
+---
+
 ## License
 
 MIT — free to use, modify, share.
