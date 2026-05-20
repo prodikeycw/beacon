@@ -1,4 +1,4 @@
-# 📬 notify
+# 📡 beacon
 
 > Universal notification CLI — send messages to **Gmail, Telegram, Slack, and Google Chat** with a single command.
 
@@ -9,16 +9,16 @@ Skip configured channels silently. Auto-splits long messages. No dependencies be
 ## ⚡ One-line install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/prodikeycw/notify/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/prodikeycw/beacon/main/install.sh | bash
 ```
 
 That's it. The installer will:
-1. Clone the repo to `~/notify/`
+1. Clone the repo to `~/beacon/`
 2. Install Python deps (`requests`)
-3. Create `~/notify/.env` from template
-4. Add `notify` alias to `~/.zshrc` / `~/.bashrc`
+3. Create `~/beacon/.env` from template
+4. Add `beacon` alias to `~/.zshrc` / `~/.bashrc`
 
-Then edit `~/notify/.env` with your credentials and restart your terminal.
+Then edit `~/beacon/.env` with your credentials and restart your terminal.
 
 ---
 
@@ -26,16 +26,16 @@ Then edit `~/notify/.env` with your credentials and restart your terminal.
 
 ```bash
 # Inline subject + body
-notify "Build done" "All tests passed ✅"
+beacon "Build done" "All tests passed ✅"
 
 # Pipe long content
-cat report.txt | notify "Daily Report"
+cat report.txt | beacon "Daily Report"
 
 # After a long-running task
-make build && notify "✅ Build done" "Ready to ship"
+make build && beacon "✅ Build done" "Ready to ship"
 
 # Without alias (full path)
-~/notify/notify.sh "Subject" "Body"
+~/beacon/beacon.sh "Subject" "Body"
 ```
 
 Each channel reports its status:
@@ -61,7 +61,7 @@ Each channel is **optional**. Configure only what you need.
 
 1. Enable 2FA at https://myaccount.google.com/security
 2. Create App Password at https://myaccount.google.com/apppasswords
-3. Edit `~/notify/.env`:
+3. Edit `~/beacon/.env`:
    ```
    EMAIL_USER=your@gmail.com
    EMAIL_APP_PASSWORD=abcdefghijklmnop   # 16 chars, no spaces
@@ -73,7 +73,7 @@ Each channel is **optional**. Configure only what you need.
 1. In Telegram, message [@BotFather](https://t.me/BotFather) → `/newbot` → copy the token
 2. **Send any message to your new bot** (this is required!)
 3. Visit `https://api.telegram.org/bot<TOKEN>/getUpdates` and find `"chat":{"id":NUMBER}`
-4. Edit `~/notify/.env`:
+4. Edit `~/beacon/.env`:
    ```
    TELEGRAM_BOT_TOKEN=123456:ABC-DEF...
    TELEGRAM_CHAT_ID=123456789
@@ -86,7 +86,7 @@ Each channel is **optional**. Configure only what you need.
 1. Go to https://api.slack.com/apps → **Create New App** → **From scratch**
 2. Sidebar → **Incoming Webhooks** → toggle **ON** → **Add New Webhook to Workspace**
 3. Pick a channel, copy the webhook URL
-4. Edit `~/notify/.env`:
+4. Edit `~/beacon/.env`:
    ```
    SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T.../B.../...
    ```
@@ -95,7 +95,7 @@ Each channel is **optional**. Configure only what you need.
 
 1. In a Chat space → space name → **Apps & integrations** → **Webhooks**
 2. **Add webhook** → name it → **Save** → copy the URL (full URL including `?key=...&token=...`)
-3. Edit `~/notify/.env`:
+3. Edit `~/beacon/.env`:
    ```
    GCHAT_WEBHOOK_URL=https://chat.googleapis.com/v1/spaces/.../messages?key=...&token=...
    ```
@@ -105,8 +105,8 @@ Each channel is **optional**. Configure only what you need.
 ## 📂 What's installed
 
 ```
-~/notify/
-├── notify.sh          ← Fan-out wrapper (calls all 4 channels)
+~/beacon/
+├── beacon.sh          ← Fan-out wrapper (calls all 4 channels)
 ├── send_email.py      ← Gmail SMTP sender
 ├── send_telegram.py   ← Telegram Bot API sender
 ├── send_slack.py      ← Slack Incoming Webhook sender
@@ -125,16 +125,16 @@ After install, add this to your global `~/.claude/CLAUDE.md` so future Claude se
 ```markdown
 ## Notification Tool
 
-`~/notify/notify.sh` is a universal notification CLI that sends to Gmail, Telegram, Slack, and Google Chat at once.
+`~/beacon/beacon.sh` is a universal notification CLI that sends to Gmail, Telegram, Slack, and Google Chat at once.
 
 Usage:
-  ~/notify/notify.sh "Subject" "Body"
-  echo "body" | ~/notify/notify.sh "Subject"
+  ~/beacon/beacon.sh "Subject" "Body"
+  echo "body" | ~/beacon/beacon.sh "Subject"
 
 Use it for: long task completion, error alerts, background monitor pings.
 ```
 
-Now you can tell Claude: *"Run the build then notify me when done"* — it'll know what to do.
+Now you can tell Claude: *"Run the build then beacon me when done"* — it'll know what to do.
 
 ---
 
@@ -152,10 +152,10 @@ Now you can tell Claude: *"Run the build then notify me when done"* — it'll kn
 Re-run the one-line installer — it does `git pull` if already installed:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/prodikeycw/notify/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/prodikeycw/beacon/main/install.sh | bash
 ```
 
-Your existing `~/notify/.env` is preserved.
+Your existing `~/beacon/.env` is preserved.
 
 ---
 
@@ -164,10 +164,10 @@ Your existing `~/notify/.env` is preserved.
 If something doesn't work, test channels one by one:
 
 ```bash
-echo "test" | python3 ~/notify/send_email.py    "📧 Test"
-echo "test" | python3 ~/notify/send_telegram.py "📱 Test"
-echo "test" | python3 ~/notify/send_slack.py    "💬 Test"
-echo "test" | python3 ~/notify/send_gchat.py    "🗨️ Test"
+echo "test" | python3 ~/beacon/send_email.py    "📧 Test"
+echo "test" | python3 ~/beacon/send_telegram.py "📱 Test"
+echo "test" | python3 ~/beacon/send_slack.py    "💬 Test"
+echo "test" | python3 ~/beacon/send_gchat.py    "🗨️ Test"
 ```
 
 ---

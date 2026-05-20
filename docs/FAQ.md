@@ -1,6 +1,6 @@
-# 📬 notify · FAQ
+# 📡 beacon · FAQ
 
-Complete setup, usage, and troubleshooting guide for the `notify` universal notification CLI.
+Complete setup, usage, and troubleshooting guide for the `beacon` universal notification CLI.
 
 ---
 
@@ -19,42 +19,42 @@ Complete setup, usage, and troubleshooting guide for the `notify` universal noti
 
 ## ⚡ 安装与基本使用（Q1–Q4）
 
-### Q1：如何安装 notify？
+### Q1：如何安装 beacon？
 
 **TL;DR：一行指令搞定。**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/prodikeycw/notify/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/prodikeycw/beacon/main/install.sh | bash
 ```
 
 安装程序会自动：
-1. Clone 到 `~/notify/`
+1. Clone 到 `~/beacon/`
 2. 安装 Python 依赖（`requests`）
-3. 从 template 建立 `~/notify/.env`
-4. 加 `notify` alias 到你的 `~/.zshrc` 或 `~/.bashrc`
+3. 从 template 建立 `~/beacon/.env`
+4. 加 `beacon` alias 到你的 `~/.zshrc` 或 `~/.bashrc`
 
 安装后：
-1. 编辑 `~/notify/.env` 填入凭证
+1. 编辑 `~/beacon/.env` 填入凭证
 2. 重启终端（或执行 `source ~/.zshrc`）
-3. 测试：`notify "Hello" "World"`
+3. 测试：`beacon "Hello" "World"`
 
-### Q2：如何使用 notify？
+### Q2：如何使用 beacon？
 
-**TL;DR：`notify "标题" "内容"` 或用 pipe。**
+**TL;DR：`beacon "标题" "内容"` 或用 pipe。**
 
 ```bash
 # 行内参数
-notify "Build complete" "All tests passed ✅"
+beacon "Build complete" "All tests passed ✅"
 
 # 透过 stdin（适合长内容）
-echo "long content here" | notify "Report"
-cat report.txt | notify "Daily Report"
+echo "long content here" | beacon "Report"
+cat report.txt | beacon "Daily Report"
 
 # 在工作流程结尾
-make build && notify "✅ Build OK" "Ready to ship"
+make build && beacon "✅ Build OK" "Ready to ship"
 
 # 不用 alias（完整路径）
-~/notify/notify.sh "Subject" "Body"
+~/beacon/beacon.sh "Subject" "Body"
 ```
 
 每个通道会回报状态：
@@ -75,7 +75,7 @@ make build && notify "✅ Build OK" "Ready to ship"
 **TL;DR：重新跑一次 installer，`.env` 不会被覆盖。**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/prodikeycw/notify/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/prodikeycw/beacon/main/install.sh | bash
 ```
 
 Installer 会侦测已存在的安装并执行 `git pull`，**你现有的 `.env` 保留**。
@@ -86,10 +86,10 @@ Installer 会侦测已存在的安装并执行 `git pull`，**你现有的 `.env
 
 ```bash
 # 删除整个安装
-rm -rf ~/notify
+rm -rf ~/beacon
 
 # 从 shell rc 移除 alias（手动编辑）
-nano ~/.zshrc   # 找到 'alias notify=' 那一行删掉
+nano ~/.zshrc   # 找到 'alias beacon=' 那一行删掉
 ```
 
 ---
@@ -110,12 +110,12 @@ nano ~/.zshrc   # 找到 'alias notify=' 那一行删掉
 
 2. **创建 App Password：**
    - 网址：https://myaccount.google.com/apppasswords
-   - 在「应用名称」框中输入 `notify`（任何名字都可以）
+   - 在「应用名称」框中输入 `beacon`（任何名字都可以）
    - 点击 **Create**
    - 复制显示的 16 字符密码（如 `abcd efgh ijkl mnop`）
    - ⚠️ Google 只显示一次，关掉后无法再看
 
-3. **更新 `~/notify/.env`：**
+3. **更新 `~/beacon/.env`：**
    ```
    EMAIL_USER=your@gmail.com
    EMAIL_APP_PASSWORD=abcdefghijklmnop   # 去掉空格
@@ -127,7 +127,7 @@ nano ~/.zshrc   # 找到 'alias notify=' 那一行删掉
 **TL;DR：用 send_email.py 单独测试。**
 
 ```bash
-echo "test" | python3 ~/notify/send_email.py "📧 Gmail Test"
+echo "test" | python3 ~/beacon/send_email.py "📧 Gmail Test"
 ```
 
 - 收到邮件 → ✅ 成功
@@ -188,7 +188,7 @@ echo "test" | python3 ~/notify/send_email.py "📧 Gmail Test"
 
 > ⚠️ **常见错误：** 不要贴成 `update_id`（那是讯息更新计数器，不是聊天室 ID）。
 
-更新 `~/notify/.env`：
+更新 `~/beacon/.env`：
 ```
 TELEGRAM_BOT_TOKEN=8123456789:AAH-AbCdEfGhIjKlMnOpQrStUvWxYzAbCd
 TELEGRAM_CHAT_ID=123456789
@@ -213,7 +213,7 @@ TELEGRAM_CHAT_ID=123456789
 | `chat not found` | 还没跟 Bot 对话过 OR chat_id 错误 | 回到 Q9 第 2 步 |
 | `unauthorized` | Bot Token 错误 | 从 BotFather 重新复制 |
 | `bot was blocked by the user` | 你封锁了自己的 Bot | 解除封锁 |
-| `message is too long` | 单则讯息超过 4096 字 | notify 会自动切分，但若仍失败请缩短内容 |
+| `message is too long` | 单则讯息超过 4096 字 | beacon 会自动切分，但若仍失败请缩短内容 |
 
 ---
 
@@ -225,12 +225,12 @@ TELEGRAM_CHAT_ID=123456789
 
 1. 登录 Slack，打开 https://api.slack.com/apps
 2. **Create New App** → **From scratch**
-3. 名称输入 `notify`，选择你的 Workspace，点 **Create App**
+3. 名称输入 `beacon`，选择你的 Workspace，点 **Create App**
 4. 左侧栏点 **Incoming Webhooks** → 切到 **On**
 5. 滚到底，点 **Add New Webhook to Workspace**
 6. 选择频道（如 `#general` 或私讯给自己），点 **Allow**
 7. 复制 Webhook URL（格式类似 `https://hooks.slack.com/services/T.../B.../...`）
-8. 更新 `~/notify/.env`：
+8. 更新 `~/beacon/.env`：
    ```
    SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T.../B.../...
    ```
@@ -240,7 +240,7 @@ TELEGRAM_CHAT_ID=123456789
 **TL;DR：用 send_slack.py 单独测试。**
 
 ```bash
-echo "test" | python3 ~/notify/send_slack.py "💬 Slack Test"
+echo "test" | python3 ~/beacon/send_slack.py "💬 Slack Test"
 ```
 
 - Slack 频道收到讯息 → ✅ 成功
@@ -272,13 +272,13 @@ echo "test" | python3 ~/notify/send_slack.py "💬 Slack Test"
 3. 添加 Webhook：
    - 点空间名称顶部 → **Apps & integrations**
    - **Webhooks** → **Add webhook**
-   - 名称输入 `notify`
+   - 名称输入 `beacon`
    - 点 **Save**
 4. 复制 Webhook URL（**整段都要**，包括 `?key=...&token=...`）：
    ```
    https://chat.googleapis.com/v1/spaces/AAAA1234/messages?key=ABC...&token=XYZ...
    ```
-5. 更新 `~/notify/.env`：
+5. 更新 `~/beacon/.env`：
    ```
    GCHAT_WEBHOOK_URL=https://chat.googleapis.com/v1/spaces/.../messages?key=...&token=...
    ```
@@ -288,7 +288,7 @@ echo "test" | python3 ~/notify/send_slack.py "💬 Slack Test"
 **TL;DR：用 send_gchat.py 单独测试。**
 
 ```bash
-echo "test" | python3 ~/notify/send_gchat.py "🗨️ Gchat Test"
+echo "test" | python3 ~/beacon/send_gchat.py "🗨️ Gchat Test"
 ```
 
 - Google Chat 空间收到讯息 → ✅ 成功
@@ -305,23 +305,23 @@ echo "test" | python3 ~/notify/send_gchat.py "🗨️ Gchat Test"
 
 ## 🛠️ 进阶用法（Q18–Q22）
 
-### Q18：如何在脚本中使用 notify？
+### Q18：如何在脚本中使用 beacon？
 
 **TL;DR：直接当作 shell 指令呼叫即可。**
 
 ```bash
 #!/bin/bash
 # 长任务完成通知
-./long_running_job.sh && notify "✅ Job done" "Result: $(cat output.txt | head -1)"
+./long_running_job.sh && beacon "✅ Job done" "Result: $(cat output.txt | head -1)"
 
 # 错误监控
 if ! ./deploy.sh; then
-    notify "🚨 Deploy failed" "Check logs at /var/log/deploy.log"
+    beacon "🚨 Deploy failed" "Check logs at /var/log/deploy.log"
     exit 1
 fi
 
 # 定时任务（cron）结尾
-0 9 * * * /path/to/daily-task.sh > /tmp/output.txt && cat /tmp/output.txt | notify "Daily Report"
+0 9 * * * /path/to/daily-task.sh > /tmp/output.txt && cat /tmp/output.txt | beacon "Daily Report"
 ```
 
 ### Q19：如何只用其中一个通道？
@@ -330,16 +330,16 @@ fi
 
 ```bash
 # 只发 Email
-echo "content" | python3 ~/notify/send_email.py "Subject"
+echo "content" | python3 ~/beacon/send_email.py "Subject"
 
 # 只发 Telegram
-echo "content" | python3 ~/notify/send_telegram.py "Subject"
+echo "content" | python3 ~/beacon/send_telegram.py "Subject"
 
 # 只发 Slack
-echo "content" | python3 ~/notify/send_slack.py "Subject"
+echo "content" | python3 ~/beacon/send_slack.py "Subject"
 
 # 只发 Google Chat
-echo "content" | python3 ~/notify/send_gchat.py "Subject"
+echo "content" | python3 ~/beacon/send_gchat.py "Subject"
 ```
 
 未配置的通道会跳过；只要 `.env` 里有对应字段就会发送。
@@ -365,15 +365,15 @@ echo "content" | python3 ~/notify/send_gchat.py "Subject"
 
 每台机器：
 ```bash
-curl -fsSL https://raw.githubusercontent.com/prodikeycw/notify/main/install.sh | bash
-open -e ~/notify/.env   # 填入凭证
+curl -fsSL https://raw.githubusercontent.com/prodikeycw/beacon/main/install.sh | bash
+open -e ~/beacon/.env   # 填入凭证
 ```
 
 各机器的 `.env` **独立**——可以发到不同的 Telegram chat、不同的 Slack 频道。
 
 凭证更新时手动同步即可（或用云端笔记保存一份 backup）。
 
-### Q22：如何让 Claude / Claude Code 自动用 notify？
+### Q22：如何让 Claude / Claude Code 自动用 beacon？
 
 **TL;DR：把使用说明加进 `~/.claude/CLAUDE.md`。**
 
@@ -382,18 +382,18 @@ open -e ~/notify/.env   # 填入凭证
 ```markdown
 ## Notification Tool
 
-`~/notify/notify.sh` is a universal notification CLI that sends to
+`~/beacon/beacon.sh` is a universal notification CLI that sends to
 Gmail, Telegram, Slack, and Google Chat at once.
 
 Usage:
-  ~/notify/notify.sh "Subject" "Body"
-  echo "body" | ~/notify/notify.sh "Subject"
+  ~/beacon/beacon.sh "Subject" "Body"
+  echo "body" | ~/beacon/beacon.sh "Subject"
 
 Use it for: long task completion, error alerts, background monitor pings.
 ```
 
 之后任何 Claude session 都会知道：
-- *"Run the build then notify me when done"* → Claude 会自动用 notify
+- *"Run the build then notify me when done"* → Claude 会自动用 beacon
 - *"Watch this log and ping me if there's an error"* → 同上
 - 不需要每次解释这个工具
 
@@ -409,6 +409,6 @@ Use it for: long task completion, error alerts, background monitor pings.
    ```
 4. 重新跑 installer：
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/prodikeycw/notify/main/install.sh | bash
+   curl -fsSL https://raw.githubusercontent.com/prodikeycw/beacon/main/install.sh | bash
    ```
-5. 在 GitHub 开 issue：https://github.com/prodikeycw/notify/issues
+5. 在 GitHub 开 issue：https://github.com/prodikeycw/beacon/issues

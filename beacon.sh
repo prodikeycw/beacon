@@ -1,17 +1,17 @@
 #!/bin/bash
 # Universal notification — sends to all 4 channels at once.
 # Usage:
-#   ~/notify/notify.sh "Subject" "Body text"
-#   echo "body text" | ~/notify/notify.sh "Subject"
-#   ~/notify/notify.sh "Subject" < /path/to/file.txt
+#   ~/beacon/beacon.sh "Subject" "Body text"
+#   echo "body text" | ~/beacon/beacon.sh "Subject"
+#   ~/beacon/beacon.sh "Subject" < /path/to/file.txt
 #
-# Skips any channel whose credentials aren't configured in ~/notify/.env
+# Skips any channel whose credentials aren't configured in ~/beacon/.env
 
-NOTIFY_DIR="$HOME/notify"
+BEACON_DIR="$HOME/beacon"
 PY=/opt/homebrew/bin/python3
 
-if [ ! -f "$NOTIFY_DIR/.env" ]; then
-    echo "Error: $NOTIFY_DIR/.env not found"
+if [ ! -f "$BEACON_DIR/.env" ]; then
+    echo "Error: $BEACON_DIR/.env not found"
     exit 1
 fi
 
@@ -25,7 +25,7 @@ else
 fi
 
 # Pipe body to each sender (each one reads from stdin)
-cd "$NOTIFY_DIR"
+cd "$BEACON_DIR"
 echo "$BODY" | $PY send_email.py    "$SUBJECT" 2>&1 | sed 's/^/[email] /'
 echo "$BODY" | $PY send_telegram.py "$SUBJECT" 2>&1 | sed 's/^/[telegram] /'
 echo "$BODY" | $PY send_slack.py    "$SUBJECT" 2>&1 | sed 's/^/[slack] /'

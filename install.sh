@@ -1,13 +1,13 @@
 #!/bin/bash
-# notify — universal notification CLI
-# One-line install: curl -fsSL https://raw.githubusercontent.com/prodikeycw/notify/main/install.sh | bash
+# beacon — universal notification CLI
+# One-line install: curl -fsSL https://raw.githubusercontent.com/prodikeycw/beacon/main/install.sh | bash
 
 set -e
 
-REPO="https://github.com/prodikeycw/notify.git"
-INSTALL_DIR="$HOME/notify"
+REPO="https://github.com/prodikeycw/beacon.git"
+INSTALL_DIR="$HOME/beacon"
 
-echo "📬 notify installer"
+echo "📡 beacon installer"
 echo ""
 
 # Clone or update
@@ -40,17 +40,17 @@ if [ ! -f "$INSTALL_DIR/.env" ]; then
 fi
 
 # Make scripts executable
-chmod +x "$INSTALL_DIR/notify.sh"
+chmod +x "$INSTALL_DIR/beacon.sh"
 
 # Add alias to shell rc files
 add_alias() {
     local rc="$1"
     [ -f "$rc" ] || return
-    if ! grep -q "alias notify=" "$rc" 2>/dev/null; then
+    if ! grep -q "alias beacon=" "$rc" 2>/dev/null; then
         echo "" >> "$rc"
-        echo "# notify — universal notification CLI" >> "$rc"
-        echo "alias notify=\"$INSTALL_DIR/notify.sh\"" >> "$rc"
-        echo "→ Added 'notify' alias to $rc"
+        echo "# beacon — universal notification CLI" >> "$rc"
+        echo "alias beacon=\"$INSTALL_DIR/beacon.sh\"" >> "$rc"
+        echo "→ Added 'beacon' alias to $rc"
     fi
 }
 
@@ -65,10 +65,10 @@ if [ -n "$NEEDS_CONFIG" ]; then
     echo "⚠️  Next steps:"
     echo "   1. Edit credentials:  open -e $INSTALL_DIR/.env"
     echo "   2. Restart terminal (or run: source ~/.zshrc)"
-    echo "   3. Test:              notify 'Hello' 'World'"
+    echo "   3. Test:              beacon 'Hello' 'World'"
     echo ""
     echo "📖 Channel setup guides:"
-    echo "   https://github.com/prodikeycw/notify#setup"
+    echo "   https://github.com/prodikeycw/beacon#setup"
 else
-    echo "Test it:  notify 'Hello' 'World'"
+    echo "Test it:  beacon 'Hello' 'World'"
 fi
