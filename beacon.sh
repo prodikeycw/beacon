@@ -4,6 +4,7 @@
 #   ~/beacon/beacon.sh "Subject" "Body text"
 #   echo "body text" | ~/beacon/beacon.sh "Subject"
 #   ~/beacon/beacon.sh "Subject" < /path/to/file.txt
+#   ~/beacon/beacon.sh "Subject" "Body" --to recipient@email.com
 #
 # Skips any channel whose credentials aren't configured in ~/beacon/.env
 
@@ -17,16 +18,29 @@ fi
 
 SUBJECT="${1:-Notification}"
 
-# If $2 is given, use it. Otherwise read from stdin.
-if [ -n "$2" ]; then
+# Parse --to argument for custom email recipient
+TO_EMAIL=""
+for i in "$@"; do
+    if [ "$PREV" = "--to" ]; then
+        TO_EMAIL="$i"
+    fi
+    PREV="$i"
+done
+
+# If $2 is given (and not --to), use it. Otherwise read from stdin.
+if [ -n "$2" ] && [ "$2" != "--to" ]; then
     BODY="$2"
 else
     BODY=$(cat)
 fi
 
-# Pipe body to each sender (each one reads from stdin)
+# Pipe body to each sender
 cd "$BEACON_DIR"
-echo "$BODY" | $PY send_email.py    "$SUBJECT" 2>&1 | sed 's/^/[email] /'
+if [ -n "$TO_EMAIL" ]; then
+    echo "$BODY" | $PY send_email.py "$SUBJECT" --to "$TO_EMAIL" 2>&1 | sed 's/^/[email] /'
+else
+    echo "$BODY" | $PY send_email.py "$SUBJECT" 2>&1 | sed 's/^/[email] /'
+fi
 echo "$BODY" | $PY send_telegram.py "$SUBJECT" 2>&1 | sed 's/^/[telegram] /'
 echo "$BODY" | $PY send_slack.py    "$SUBJECT" 2>&1 | sed 's/^/[slack] /'
 echo "$BODY" | $PY send_gchat.py    "$SUBJECT" 2>&1 | sed 's/^/[gchat] /'

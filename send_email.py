@@ -64,11 +64,17 @@ def send_email(subject, body, to=None):
 
 
 if __name__ == "__main__":
-    # CLI usage: cat body.txt | python3 send_email.py "Subject line"
+    # CLI usage: cat body.txt | python3 send_email.py "Subject line" [--to recipient@email.com]
     if len(sys.argv) < 2:
-        print("Usage: python3 send_email.py 'Subject line' < body.txt")
+        print("Usage: python3 send_email.py 'Subject line' [--to recipient@email.com] < body.txt")
         sys.exit(1)
     subject = sys.argv[1]
+    # Parse optional --to argument
+    to_email = None
+    if "--to" in sys.argv:
+        to_index = sys.argv.index("--to")
+        if to_index + 1 < len(sys.argv):
+            to_email = sys.argv[to_index + 1]
     body = sys.stdin.read()
-    ok = send_email(subject, body)
+    ok = send_email(subject, body, to=to_email)
     sys.exit(0 if ok else 1)
