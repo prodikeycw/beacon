@@ -9,7 +9,7 @@
 # Skips any channel whose credentials aren't configured in ~/beacon/.env
 
 BEACON_DIR="$HOME/beacon"
-PY=/opt/homebrew/bin/python3
+PY=$(command -v python3)
 
 if [ ! -f "$BEACON_DIR/.env" ]; then
     echo "Error: $BEACON_DIR/.env not found"
